@@ -1,0 +1,10 @@
+.git
+.env
+.secrets
+backups
+dist
+__pycache__
+.pytest_cache
+tests
+docs
+*.zip

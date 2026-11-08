@@ -1,0 +1,126 @@
+name: personal-ai
+services:
+  db:
+    image: pgvector/pgvector:0.8.7-pg16-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-personal_ai}
+      POSTGRES_USER: ${POSTGRES_USER:-personal_ai}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-personal_ai} -d ${POSTGRES_DB:-personal_ai}"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      APP_PORT: 8000
+      COOKIE_SECURE: ${COOKIE_SECURE:-true}
+      SESSION_MAX_AGE: ${SESSION_MAX_AGE:-604800}
+      SESSION_SECRET_FILE: /run/secrets/session_secret
+      APP_PASSWORD_FILE: /run/secrets/app_password
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-personal_ai}
+      POSTGRES_USER: ${POSTGRES_USER:-personal_ai}
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+      NINEROUTER_BASE_URL: ${NINEROUTER_BASE_URL:-http://ninerouter:20128/v1}
+      NINEROUTER_API_KEY_FILE: /run/secrets/ninerouter_api_key
+      NINEROUTER_CHAT_MODEL: ${NINEROUTER_CHAT_MODEL:-}
+      NINEROUTER_EMBEDDING_MODEL: ${NINEROUTER_EMBEDDING_MODEL:-}
+      MEMORY_RESULTS: ${MEMORY_RESULTS:-5}
+      CHAT_HISTORY_LIMIT: ${CHAT_HISTORY_LIMIT:-20}
+    secrets: [postgres_password, app_password, session_secret, ninerouter_api_key]
+    depends_on:
+      db: {condition: service_healthy}
+    ports:
+      - "127.0.0.1:${APP_PORT:-8000}:8000"
+    read_only: true
+    tmpfs: [/tmp:size=16m,noexec,nosuid]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  ninerouter:
+    image: decolua/9router:0.5.112
+    restart: unless-stopped
+    environment:
+      DATA_DIR: /app/data
+      PORT: 20128
+      HOSTNAME: 0.0.0.0
+      NODE_ENV: production
+      REQUIRE_API_KEY: "true"
+      ENABLE_REQUEST_LOGS: "false"
+    volumes:
+      - ninerouter_data:/app/data
+    ports:
+      - "127.0.0.1:20128:20128"
+    security_opt: [no-new-privileges:true]
+
+  caddy:
+    image: caddy:2.11.9-alpine
+    profiles: [tls]
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [app]
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+
+  backup:
+    image: personal-ai-backup:local
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+    profiles: [backup]
+    restart: unless-stopped
+    entrypoint: ["/bin/bash", "/scripts/backup-loop.sh"]
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: ${POSTGRES_DB:-personal_ai}
+      PGUSER: ${POSTGRES_USER:-personal_ai}
+      PGPASSWORD_FILE: /run/secrets/postgres_password
+      BACKUP_AGE_RECIPIENT: ${BACKUP_AGE_RECIPIENT:-}
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+    secrets: [postgres_password]
+    volumes:
+      - ./scripts:/scripts:ro
+      - ./backups:/backups
+    depends_on:
+      db: {condition: service_healthy}
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+
+volumes:
+  postgres_data:
+  ninerouter_data:
+    name: personal-ai-ninerouter_data
+  caddy_data:
+  caddy_config:
+
+secrets:
+  postgres_password: {file: .secrets/postgres_password}
+  app_password: {file: .secrets/app_password}
+  session_secret: {file: .secrets/session_secret}
+  ninerouter_api_key: {file: .secrets/ninerouter_api_key}

@@ -78,4 +78,3 @@ Riwayat chat dan memori berada di database PostgreSQL pada volume Docker. Teks p
 ## Pemeriksaan
 
 Jalankan tes konfigurasi setelah Python tersedia dan `pip install -r requirements-dev.txt`: `python -m pytest -q`. Periksa konfigurasi Compose: `docker compose config`. Buat image untuk ARM64: `docker buildx build --platform linux/arm64 -t personal-ai:arm64 .`. Lihat status dan log dengan `docker compose ps` dan `docker compose logs app db ninerouter`.
-
