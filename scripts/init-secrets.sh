@@ -6,6 +6,16 @@ chmod 700 .secrets
 chmod 700 backups
 command -v age-keygen >/dev/null || { echo "Install age before creating backup keys (sudo apt install age)." >&2; exit 1; }
 
+if [[ ! -f .env ]]; then
+  echo "Run scripts/start-9router-bootstrap.sh first to create a persistent 9Router API key secret." >&2
+  exit 1
+fi
+router_key_secret="$(sed -n 's/^NINEROUTER_API_KEY_SECRET=//p' .env | tail -n 1)"
+if [[ -z "$router_key_secret" ]]; then
+  echo "NINEROUTER_API_KEY_SECRET is missing from .env. Run scripts/start-9router-bootstrap.sh first." >&2
+  exit 1
+fi
+
 if [[ -e .secrets/app_password || -e .secrets/session_secret || -e .secrets/postgres_password || -e .secrets/ninerouter_api_key || -e .secrets/backup_age_key ]]; then
   echo "Secret files already exist. Back them up before replacing anything." >&2
   exit 1
@@ -14,12 +24,12 @@ fi
 read -r -s -p "New app sign-in password (12+ characters): " app_password
 printf '\n'
 if (( ${#app_password} < 12 )); then echo "Password must be at least 12 characters." >&2; exit 1; fi
-read -r -s -p "9Router API key: " router_key
+read -r -s -p "9Router local Endpoint API key (from its dashboard, not a provider API key): " router_key
 printf '\n'
 read -r -p "Chat model name from 9Router: " chat_model
 read -r -p "Embedding model name from 9Router: " embedding_model
 if [[ -z "$router_key" || -z "$chat_model" || -z "$embedding_model" ]]; then
-  echo "The 9Router API key, chat model, and embedding model are required." >&2
+  echo "The 9Router Endpoint API key, chat model, and embedding model are required." >&2
   exit 1
 fi
 if [[ ! "$chat_model" =~ ^[A-Za-z0-9._:/-]+$ || ! "$embedding_model" =~ ^[A-Za-z0-9._:/-]+$ ]]; then
@@ -34,7 +44,7 @@ age-keygen -o .secrets/backup_age_key >/dev/null 2>&1
 printf '%s' "$router_key" > .secrets/ninerouter_api_key
 chmod 600 .secrets/*
 
-if [[ ! -f .env ]]; then cp .env.example .env; fi
+chmod 600 .env
 recipient="$(age-keygen -y .secrets/backup_age_key)"
 python3 - "$chat_model" "$embedding_model" "$recipient" <<'PY'
 from pathlib import Path

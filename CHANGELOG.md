@@ -15,3 +15,9 @@
 - Mengganti backup simetris menjadi enkripsi streaming `age` agar dump plaintext tidak ditulis ke disk dan kunci privat tidak masuk ke container backup.
 - Memperbarui dependency serta dokumentasi deployment sesuai image ARM64 dan paket yang tersedia.
 - Menambahkan satu catatan repo tentang pekerjaan lanjutan untuk migrasi skema, pengujian, memori, keamanan, backup, deployment, dan observabilitas.
+
+## 2026-11-09 — Integrasi API key 9Router
+
+- Menyimpan `API_KEY_SECRET` acak 9Router secara persisten di `.env` agar API key Endpoint yang dibuat di dashboard tetap valid di bootstrap dan layanan Compose.
+- Menjelaskan perbedaan API key Endpoint 9Router dan kredensial provider AI; aplikasi memakai key Endpoint melalui header Bearer pada API OpenAI-compatible `/v1`.
+- Memperbarui panduan setup agar secret 9Router di `.env` tetap privat dan konsisten.

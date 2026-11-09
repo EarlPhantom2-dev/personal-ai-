@@ -64,6 +64,7 @@ services:
       HOSTNAME: 0.0.0.0
       NODE_ENV: production
       REQUIRE_API_KEY: "true"
+      API_KEY_SECRET: "${NINEROUTER_API_KEY_SECRET:?Run scripts/start-9router-bootstrap.sh before starting 9Router}"
       ENABLE_REQUEST_LOGS: "false"
     volumes:
       - ninerouter_data:/app/data

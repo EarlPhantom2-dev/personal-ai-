@@ -45,19 +45,21 @@ cp .env.example .env
 bash scripts/start-9router-bootstrap.sh
 ```
 
+Bootstrap menghasilkan `NINEROUTER_API_KEY_SECRET` acak dan menyimpannya di `.env` dengan izin file terbatas. Secret yang sama dipakai 9Router saat bootstrap dan saat berjalan dengan Compose; jangan mengubahnya setelah API key Endpoint dibuat.
+
 Siapkan DNS `A` record domain ke public IP. Atur `DOMAIN=ai.domain-anda` dalam `.env`. Jangan menaruh `.secrets/` atau `.env` di Git. Dashboard 9Router dibind ke loopback; akses lewat tunnel SSH dari komputer admin:
 
 ```bash
 ssh -L 20128:127.0.0.1:20128 ubuntu@PUBLIC_IP
 ```
 
-Buka `http://127.0.0.1:20128`, masuk dengan kata sandi awal `123456`, lalu segera ganti. Sambungkan provider AI, salin API key, dan pilih model chat serta model embedding. Hapus container bootstrap setelah selesai:
+Buka `http://127.0.0.1:20128`, masuk dengan kata sandi awal `123456`, lalu segera ganti. Sambungkan provider AI, lalu buat/salin API key **Endpoint 9Router** dari dashboard dan pilih model chat serta embedding. Aplikasi memakai API key Endpoint tersebut dengan `Authorization: Bearer ...`; API key provider (contoh: OpenAI) dikelola hanya di dashboard 9Router. Hapus container bootstrap setelah selesai:
 
 ```bash
 docker rm -f personal-ai-ninerouter-bootstrap
 ```
 
-Data dashboard tersimpan di volume `personal-ai-ninerouter_data`. Jalankan `bash scripts/init-secrets.sh` dan masukkan API key serta model saat diminta; script membuat secret aplikasi dan menuliskan model serta public recipient backup ke `.env`. Aplikasi memakai endpoint internal `http://ninerouter:20128/v1`.
+Data dashboard tersimpan di volume `personal-ai-ninerouter_data`. Jalankan `bash scripts/init-secrets.sh` dan masukkan API key Endpoint serta model saat diminta; script membuat secret aplikasi dan menuliskan model serta public recipient backup ke `.env`. `.env` berisi secret API key 9Router: simpan dengan izin terbatas dan salinannya di lokasi aman. Aplikasi memakai endpoint internal `http://ninerouter:20128/v1`.
 
 ## 4. Jalankan layanan
 

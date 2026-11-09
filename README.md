@@ -20,7 +20,9 @@ cp .env.example .env
 bash scripts/start-9router-bootstrap.sh
 ```
 
-Masuk ke dashboard 9Router yang tersedia di loopback port 20128, ubah kata sandi awal `123456`, sambungkan provider, lalu catat API key serta nama model chat dan embedding. Hapus container bootstrap setelah selesai; data router tetap ada di volume Docker:
+Script bootstrap membuat `NINEROUTER_API_KEY_SECRET` acak di `.env` dengan izin file terbatas. Nilai tetap ini dipakai selama bootstrap dan saat service Compose berjalan; jangan dihapus atau diganti setelah API key diterbitkan karena 9Router memakainya untuk memvalidasi API key lokal.
+
+Masuk ke dashboard 9Router yang tersedia di loopback port 20128, ubah kata sandi awal `123456`, sambungkan provider AI, lalu buat/salin API key untuk **Endpoint 9Router** dari dashboard beserta nama model chat dan embedding. Masukkan key Endpoint itu saat script meminta. Jangan masukkan key milik provider (misalnya OpenAI/Anthropic) pada aplikasi ini; key provider disimpan di dashboard 9Router. Aplikasi mengirim key Endpoint melalui header `Authorization: Bearer ...` ke `http://ninerouter:20128/v1`. Hapus container bootstrap setelah selesai; data router tetap ada di volume Docker:
 
 ```bash
 docker rm -f personal-ai-ninerouter-bootstrap
@@ -32,7 +34,7 @@ Script berikut meminta nilai tersebut bersama kata sandi aplikasi, lalu membuat 
 bash scripts/init-secrets.sh
 ```
 
-Simpan salinan aman dari `./.secrets/backup_age_key` di luar server; tanpa kunci privat ini, backup terenkripsi tidak dapat dipulihkan.
+Simpan salinan aman dari `./.secrets/backup_age_key` dan `.env` di luar server; tanpa kunci privat age, backup terenkripsi tidak dapat dipulihkan, dan `.env` berisi secret validasi API key 9Router.
 
 Jalankan layanan:
 
@@ -40,7 +42,7 @@ Jalankan layanan:
 docker compose up -d --build
 ```
 
-API key dan model 9Router sudah disimpan oleh script penyiapan. Jika Anda mengubahnya kemudian, perbarui `.secrets/ninerouter_api_key` dan nilai model di `.env`. Restart aplikasi sesudah mengubah konfigurasi:
+API key Endpoint dan model 9Router sudah disimpan oleh script penyiapan. Jika Anda memutar key Endpoint, perbarui `.secrets/ninerouter_api_key`; jika mengubah model, perbarui nilai model di `.env`. Restart aplikasi sesudah mengubah konfigurasi:
 
 ```bash
 docker compose restart app
