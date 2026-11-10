@@ -7,4 +7,6 @@ __pycache__
 .pytest_cache
 tests
 docs
+design
 *.zip
+

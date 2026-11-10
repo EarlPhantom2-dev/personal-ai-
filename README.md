@@ -11,6 +11,15 @@ Asisten AI privat untuk satu pengguna. Aplikasi berjalan dengan FastAPI, Postgre
 - Backup PostgreSQL otomatis harian, terenkripsi, dengan retensi yang dapat diatur.
 - Deployment lewat Docker Compose, reverse proxy Caddy, dan HTTPS otomatis.
 
+## Konsep UI mobile
+
+Rancangan awal aplikasi **Nara Personal AI** dibuat di FigCraft, mengikuti referensi visual yang diberikan. Tiga layar yang dicakup: beranda agent, percakapan chat, dan voice agent. Rancangan juga menampilkan akses ke memori personal, pengingat/rutinitas, pencarian riwayat, serta kontrol privasi.
+
+- [Buka file native FigCraft](design/nara-personal-ai-mobile.figcraft)
+- [Lihat rancangan SVG](design/nara-personal-ai-mobile.svg)
+
+![Pratinjau konsep UI mobile Nara](design/nara-personal-ai-mobile.svg)
+
 ## Jalankan di server
 
 Perlu Docker Engine dengan Docker Compose v2, OpenSSL, dan `age` (`sudo apt install age`). Dari Ubuntu, clone repo, lalu jalankan:
@@ -80,3 +89,4 @@ Riwayat chat dan memori berada di database PostgreSQL pada volume Docker. Teks p
 ## Pemeriksaan
 
 Jalankan tes konfigurasi setelah Python tersedia dan `pip install -r requirements-dev.txt`: `python -m pytest -q`. Periksa konfigurasi Compose: `docker compose config`. Buat image untuk ARM64: `docker buildx build --platform linux/arm64 -t personal-ai:arm64 .`. Lihat status dan log dengan `docker compose ps` dan `docker compose logs app db ninerouter`.
+

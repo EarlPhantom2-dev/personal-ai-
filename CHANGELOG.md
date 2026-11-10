@@ -21,3 +21,10 @@
 - Menyimpan `API_KEY_SECRET` acak 9Router secara persisten di `.env` agar API key Endpoint yang dibuat di dashboard tetap valid di bootstrap dan layanan Compose.
 - Menjelaskan perbedaan API key Endpoint 9Router dan kredensial provider AI; aplikasi memakai key Endpoint melalui header Bearer pada API OpenAI-compatible `/v1`.
 - Memperbarui panduan setup agar secret 9Router di `.env` tetap privat dan konsisten.
+
+## 2026-11-10 — Konsep UI mobile Nara
+
+- Membuat rancangan mobile di FigCraft berdasarkan gambar referensi, mencakup beranda, chat agent, dan voice agent.
+- Menambahkan jalur fitur memori personal, pengingat/rutinitas, riwayat yang dapat dicari, dan kontrol privasi.
+- Menyimpan file native FigCraft dan SVG sumber di repo; pratinjau PNG tersedia di workspace.
+
