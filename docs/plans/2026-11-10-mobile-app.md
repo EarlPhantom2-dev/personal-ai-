@@ -52,4 +52,4 @@ Document voice-provider privacy limits, install instructions, reminder behavior,
 - Voice is browser-managed speech recognition/synthesis, not a realtime server-side audio agent. Browser support and microphone permission vary.
 - Recurring reminders advance when marked done. Browser notifications are checked while the app is open; server push and closed-app scheduling are not part of this implementation.
 - On a database that already contains the previous app tables, startup creates the new `reminders` table. No existing chat or memory table is changed.
-- Syntax checks passed for Python and JavaScript, and all JavaScript ID selectors resolve in the HTML. Automated tests and a live database/provider session were not run in this environment.
+- Syntax checks passed for Python and JavaScript, all JavaScript ID selectors resolve in the HTML, and the ZIP plus GitHub blobs were verified. Docker is unavailable here, so no live app/database/provider/browser session was run; automated tests were not run.
