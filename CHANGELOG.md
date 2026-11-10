@@ -27,4 +27,3 @@
 - Membuat rancangan mobile di FigCraft berdasarkan gambar referensi, mencakup beranda, chat agent, dan voice agent.
 - Menambahkan jalur fitur memori personal, pengingat/rutinitas, riwayat yang dapat dicari, dan kontrol privasi.
 - Menyimpan file native FigCraft dan SVG sumber di repo; pratinjau PNG tersedia di workspace.
-
