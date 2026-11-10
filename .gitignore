@@ -1,4 +1,5 @@
 .env
+.agent/
 .secrets/
 .venv/
 __pycache__/

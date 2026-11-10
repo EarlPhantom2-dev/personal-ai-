@@ -1,0 +1,16 @@
+{
+  "id": "/#home",
+  "name": "Nara Personal AI",
+  "short_name": "Nara",
+  "description": "Asisten AI pribadi untuk chat, suara, memori, dan pengingat.",
+  "lang": "id-ID",
+  "start_url": "/#home",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#edf3ff",
+  "theme_color": "#edf3ff",
+  "icons": [
+    { "src": "/static/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

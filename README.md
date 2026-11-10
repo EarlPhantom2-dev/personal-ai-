@@ -7,18 +7,33 @@ Asisten AI privat untuk satu pengguna. Aplikasi berjalan dengan FastAPI, Postgre
 - Login kata sandi dengan cookie sesi aman, pembatasan percobaan login, dan header keamanan.
 - Chat tersimpan di PostgreSQL, daftar percakapan dapat dibuka dan dihapus.
 - Memori tersimpan menggunakan embedding 9Router dan pencarian cosine pgvector; bila layanan embedding sementara gagal, aplikasi mengambil memori terbaru.
-- UI web responsif. Konten pesan dirender sebagai teks, bukan HTML.
+- Antarmuka mobile-first berbahasa Indonesia: beranda Nara, chat tersimpan, voice agent, memori, pengingat berulang, serta pengaturan privasi.
+- Simpan balasan Nara secara eksplisit ke memori dari chat; pengguna tetap dapat menghapus memori kapan saja.
+- PWA yang dapat dipasang; cache lokal hanya menyimpan shell statis, bukan chat atau respons API.
+- Voice agent memakai transkrip suara browser yang tersedia, mengirim teks melalui API chat, dan membacakan jawaban bila browser mendukung.
+- Pencarian lintas judul dan isi chat, pengingat harian/mingguan, notifikasi browser saat aplikasi terbuka, serta ekspor data JSON.
+- Konten pesan dirender sebagai teks, bukan HTML; navigasi keyboard, target sentuh besar, status dinamis, dan reduced motion disediakan.
 - Backup PostgreSQL otomatis harian, terenkripsi, dengan retensi yang dapat diatur.
 - Deployment lewat Docker Compose, reverse proxy Caddy, dan HTTPS otomatis.
 
-## Konsep UI mobile
+## Aplikasi mobile web Nara
 
-Rancangan awal aplikasi **Nara Personal AI** dibuat di FigCraft, mengikuti referensi visual yang diberikan. Tiga layar yang dicakup: beranda agent, percakapan chat, dan voice agent. Rancangan juga menampilkan akses ke memori personal, pengingat/rutinitas, pencarian riwayat, serta kontrol privasi.
+Antarmuka **Nara Personal AI** mengikuti rancangan FigCraft: beranda dengan companion, chat agent, dan voice agent. Bagian lain menyediakan memori yang dapat dihapus, pencarian riwayat, pengingat sekali/hari/mingguan, ekspor data, dan kontrol perangkat. Tampilan menyesuaikan layar ponsel dan desktop; pada browser yang mendukung, aplikasi dapat dipasang ke layar utama.
 
 - [Buka file native FigCraft](design/nara-personal-ai-mobile.figcraft)
 - [Lihat rancangan SVG](design/nara-personal-ai-mobile.svg)
 
 ![Pratinjau konsep UI mobile Nara](design/nara-personal-ai-mobile.svg)
+
+### Voice dan notifikasi
+
+Transkrip suara memakai `SpeechRecognition`/`webkitSpeechRecognition` bila tersedia di browser. Pengguna dapat memeriksa atau mengedit transkrip sebelum mengirimnya. Browser atau vendor pengenal suara dapat memproses audio sesuai kebijakannya; aplikasi mengirim transkrip teks ke 9Router. Pembacaan jawaban memakai speech synthesis browser.
+
+Pengingat tersimpan di PostgreSQL dan notifikasi browser hanya dipicu ketika aplikasi terbuka. Ini bukan push notification atau scheduler server; untuk menerima pengingat saat semua tab tertutup, integrasi push dan worker server masih perlu dikembangkan.
+
+Browser tanpa dukungan notifikasi tetap dapat melihat jadwal ketika membuka halaman Pengingat. Selesaikan pengingat rutin untuk menjadwalkan kejadian berikutnya.
+
+Gunakan HTTPS untuk izin mikrofon dan pemasangan PWA. Di Chrome/Edge pilih **Install app**; di iOS Safari gunakan **Bagikan → Tambah ke Layar Utama**. Browser tanpa Web Speech API tetap dapat memakai chat dan mengetik transkrip voice secara manual.
 
 ## Jalankan di server
 

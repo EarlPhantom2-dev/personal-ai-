@@ -2,84 +2,94 @@
 <html lang="id">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  <title>Personal AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#edf3ff">
+  <meta name="description" content="Nara adalah asisten AI pribadi untuk membantu percakapan, ide, memori, suara, dan pengingat.">
+  <meta name="color-scheme" content="light">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Nara">
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/app.css">
   <script src="/static/app.js" defer></script>
+  <title>Nara — Personal AI</title>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Lewati ke konten</a>
   <main id="login-view" class="login-view" hidden>
     <section class="login-card" aria-labelledby="login-title">
-      <div class="brand-mark" aria-hidden="true">✳</div>
-      <p class="eyebrow">RUANG PRIBADI</p>
-      <h1 id="login-title">Personal AI</h1>
-      <p class="muted">Masuk untuk melanjutkan percakapan Anda.</p>
+      <a class="brand" href="/" aria-label="Nara Personal AI"><span class="brand-mark" aria-hidden="true">✳</span><span>Nara</span></a>
+      <p class="eyebrow">RUANG PRIBADIMU</p>
+      <h1 id="login-title">Senang bertemu lagi.</h1>
+      <p class="muted">Masuk dengan kata sandi untuk melanjutkan percakapan dan memori Anda.</p>
       <form id="login-form">
         <label for="password">Kata sandi</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
         <p id="login-error" class="field-error" role="alert" hidden></p>
-        <button class="primary" type="submit">Masuk <span aria-hidden="true">→</span></button>
+        <button class="button button-primary" type="submit">Masuk <span aria-hidden="true">→</span></button>
       </form>
+      <p class="login-privacy">Data Anda tersimpan di server pribadi.</p>
     </section>
   </main>
 
-  <div id="chat-view" class="app-shell" hidden>
-    <aside class="sidebar" aria-label="Navigasi">
-      <div class="sidebar-top">
-        <a class="brand" href="/" aria-label="Personal AI beranda"><span class="brand-mark small">✳</span><span>Personal AI</span></a>
-        <button id="new-chat" class="new-chat" type="button"><span aria-hidden="true">＋</span> Percakapan baru</button>
-        <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="sidebar-content">Riwayat &amp; memori</button>
+  <div id="app-shell" class="app-shell" hidden>
+    <header class="topbar">
+      <a class="brand" href="#home" data-view="home" aria-label="Nara beranda"><span class="brand-mark" aria-hidden="true">✳</span><span>Nara</span></a>
+      <div class="topbar-actions">
+        <span class="connection"><span class="status-dot" aria-hidden="true"></span>Ruang privat</span>
+        <button class="icon-button" type="button" data-view="settings" aria-label="Buka pengaturan" title="Pengaturan"><span aria-hidden="true">⚙</span></button>
       </div>
-      <div id="sidebar-content" class="sidebar-content">
-      <section class="side-section">
-        <h2>Percakapan</h2>
-        <div id="conversation-list" class="conversation-list" aria-live="polite"></div>
-      </section>
-      <section class="side-section memories-section">
-        <h2>Memori tersimpan</h2>
-        <div id="memory-list" class="memory-list"><p class="muted small-copy">Memori yang relevan akan muncul di sini.</p></div>
-      </section>
-      </div>
-      <div class="sidebar-bottom">
-        <span class="status-dot" aria-hidden="true"></span><span>Ruang privat</span>
-        <button id="logout" class="text-button" type="button">Keluar</button>
-      </div>
-    </aside>
+    </header>
 
-    <section class="chat-panel" aria-label="Percakapan dengan asisten">
-      <header class="chat-header">
-        <div><p class="eyebrow">ASISTEN PRIBADI</p><h1 id="chat-title">Percakapan baru</h1></div>
-        <span class="provider-badge">9Router</span>
-      </header>
-      <div id="messages" class="messages" aria-live="polite" aria-relevant="additions text">
-        <div id="welcome" class="welcome">
-          <div class="welcome-icon" aria-hidden="true">✳</div>
-          <p class="eyebrow">MULAI DARI SINI</p>
-          <h2>Apa yang ingin Anda pikirkan hari ini?</h2>
-          <p>Riwayat percakapan disimpan di server pribadi Anda. Memori membantu asisten mengingat konteks penting.</p>
+    <main id="main-content" class="main-content" tabindex="-1">
+      <section id="home-view" class="view home-view" aria-labelledby="home-title" hidden>
+        <header class="greeting-row"><div><p id="today-date" class="eyebrow">RUANG PRIBADI</p><h1 id="home-title" tabindex="-1">Selamat pagi.</h1><p class="muted">Ada yang bisa kubantu hari ini?</p></div><span class="day-badge" aria-hidden="true">✦</span></header>
+        <section class="hero-card" aria-label="Nara, asisten AI pribadi">
+          <div class="hero-copy"><p class="eyebrow">NARA SIAP MENEMANI</p><h2>Pikirkan lebih jernih.<br>Mulai dari sini.</h2><p>Punya ide, pertanyaan, atau rencana? Kita uraikan bersama.</p><div class="hero-actions"><button class="button button-light" type="button" data-view="chat">Mulai chat <span aria-hidden="true">↗</span></button><button class="button button-glass" type="button" data-view="voice"><span aria-hidden="true">◖</span> Bicara dengan Nara</button></div></div>
+          <div class="companion-orb" aria-hidden="true"><span class="orb-ear ear-left"></span><span class="orb-ear ear-right"></span><span class="orb-eye eye-left"></span><span class="orb-eye eye-right"></span><span class="orb-smile"></span><span class="orb-sparkle sparkle-one">✦</span><span class="orb-sparkle sparkle-two">✧</span></div>
+          <span class="hero-caption">Asisten pribadimu, selalu siap</span>
+        </section>
+        <section class="quick-grid" aria-label="Akses cepat">
+          <button class="quick-card" type="button" data-view="memory"><span class="quick-icon" aria-hidden="true">✧</span><span><strong>Memori personal</strong><small id="memory-count">Lihat hal yang Nara ingat</small></span><span class="card-arrow" aria-hidden="true">↗</span></button>
+          <button class="quick-card" type="button" data-view="reminders"><span class="quick-icon amber" aria-hidden="true">◷</span><span><strong>Pengingat &amp; rutinitas</strong><small id="reminder-count">Atur pengingat harianmu</small></span><span class="card-arrow" aria-hidden="true">↗</span></button>
+        </section>
+        <section class="recent-section" aria-labelledby="recent-title"><div class="section-heading"><div><p class="eyebrow">LANJUTKAN KAPAN SAJA</p><h2 id="recent-title">Percakapan terakhir</h2></div><button class="text-link" type="button" data-view="chat">Semua chat <span aria-hidden="true">→</span></button></div><div id="home-recent" class="recent-list" aria-live="polite"></div></section>
+      </section>
+
+      <section id="chat-view" class="view chat-view" aria-labelledby="chat-title" hidden>
+        <header class="page-heading"><div><p class="eyebrow">RUANG BERPIKIR</p><h1 id="chat-title" tabindex="-1">Chat agent</h1><p class="muted">Ide, pertanyaan, dan rencana tersimpan dengan aman.</p></div><button id="new-chat" class="button button-secondary" type="button"><span aria-hidden="true">＋</span> Chat baru</button></header>
+        <details class="history-panel" id="history-panel"><summary>Riwayat percakapan <span id="history-count" class="count-pill">0</span></summary><label class="sr-only" for="history-search">Cari judul atau isi chat</label><input id="history-search" type="search" placeholder="Cari percakapan…" autocomplete="off"><div id="conversation-list" class="conversation-list" aria-live="polite"></div></details>
+        <div class="chat-card">
+          <div class="chat-card-header"><div class="assistant-avatar" aria-hidden="true">✳</div><div><strong id="active-chat-title">Percakapan baru</strong><span><i class="status-dot" aria-hidden="true"></i> 9Router terhubung</span></div><button class="icon-button voice-shortcut" type="button" data-view="voice" aria-label="Buka voice agent" title="Bicara dengan Nara">◖</button></div>
+          <div id="messages" class="messages" aria-live="polite" aria-relevant="additions text"><div id="welcome" class="welcome"><div class="welcome-orb" aria-hidden="true">✳</div><p class="eyebrow">MULAI DARI SINI</p><h2>Apa yang ingin kamu pikirkan hari ini?</h2><p>Chat dan memori disimpan di server pribadimu. Nara memakai konteks relevan untuk membantumu.</p><div class="suggestions"><button type="button" data-prompt="Bantu aku menyusun prioritas hari ini.">Susun prioritas hari ini <span aria-hidden="true">↗</span></button><button type="button" data-prompt="Bantu aku merangkum ide proyek yang sedang kukerjakan.">Rangkum ide proyek <span aria-hidden="true">↗</span></button></div></div></div>
+          <form id="chat-form" class="composer"><label class="sr-only" for="message-input">Pesan untuk Nara</label><textarea id="message-input" rows="1" maxlength="16000" placeholder="Tulis pesan untuk Nara…" required></textarea><div class="composer-footer"><span>Enter kirim · Shift + Enter baris baru</span><button id="send-button" class="send-button" type="submit" aria-label="Kirim pesan">↑</button></div></form>
         </div>
-      </div>
-      <form id="chat-form" class="composer">
-        <label class="sr-only" for="message-input">Pesan untuk asisten</label>
-        <textarea id="message-input" rows="1" maxlength="16000" placeholder="Tulis pesan…" required></textarea>
-        <div class="composer-footer"><span>Enter untuk kirim · Shift + Enter untuk baris baru</span><button id="send-button" class="send-button" type="submit" aria-label="Kirim pesan">↑</button></div>
-      </form>
-      <p id="chat-error" class="chat-error" role="alert" hidden></p>
-      <p class="privacy-note">Pesan dan memori disimpan di PostgreSQL Anda dan dikirim ke 9Router untuk menghasilkan jawaban.</p>
-    </section>
+        <p id="chat-error" class="inline-error" role="alert" hidden></p><p class="privacy-note">Pesan dan transkrip dikirim ke 9Router untuk menghasilkan jawaban. <button type="button" class="inline-link" data-view="settings">Lihat privasi</button></p>
+      </section>
+
+      <section id="voice-view" class="view voice-view" aria-labelledby="voice-title" hidden>
+        <header class="page-heading voice-heading"><div><p class="eyebrow">BICARA SEPERTI BIASA</p><h1 id="voice-title" tabindex="-1">Voice agent</h1><p class="muted">Sesi suara privat dengan Nara.</p></div><span class="provider-badge"><i class="status-dot" aria-hidden="true"></i> Siap mendengarkan</span></header>
+        <div class="voice-card"><div id="voice-orb" class="voice-orb" aria-hidden="true"><div class="companion-orb small-orb"><span class="orb-ear ear-left"></span><span class="orb-ear ear-right"></span><span class="orb-eye eye-left"></span><span class="orb-eye eye-right"></span><span class="orb-smile"></span></div><span class="voice-ring ring-one"></span><span class="voice-ring ring-two"></span></div><p id="voice-status" class="voice-status" role="status" aria-live="polite">Hai, aku mendengarkan.</p><p class="muted voice-hint">Ketuk mikrofon untuk mulai. Kamu bisa berhenti kapan saja.</p>
+          <label class="sr-only" for="voice-transcript">Transkrip suara, dapat diedit</label><textarea id="voice-transcript" class="transcript-input" rows="3" placeholder="Transkrip ucapanmu akan muncul di sini…"></textarea>
+          <div class="voice-controls"><button id="voice-clear" class="round-control" type="button" aria-label="Hapus transkrip" title="Hapus transkrip">⌫</button><button id="voice-toggle" class="mic-control" type="button" aria-label="Mulai merekam" aria-pressed="false"><span aria-hidden="true">◖</span><small>Mulai bicara</small></button><button id="voice-speak" class="round-control" type="button" aria-label="Bacakan jawaban Nara" title="Bacakan jawaban">♫</button></div>
+          <div class="voice-actions"><button id="voice-send" class="button button-primary" type="button" disabled>Kirim transkrip <span aria-hidden="true">↑</span></button><button id="voice-to-chat" class="button button-quiet" type="button" data-view="chat">Lanjutkan di chat</button></div>
+          <p id="voice-note" class="voice-note">Audio diproses oleh dukungan suara browser. Transkrip yang dikirim akan masuk ke riwayat chat.</p><p id="voice-error" class="inline-error" role="alert" hidden></p>
+        </div>
+        <section id="voice-reply-card" class="voice-reply-card" aria-labelledby="voice-reply-title" hidden><div class="section-heading"><div><p class="eyebrow">JAWABAN NARA</p><h2 id="voice-reply-title">Balasan terakhir</h2></div><button id="voice-reply-play" class="text-link" type="button">Dengarkan <span aria-hidden="true">♫</span></button></div><p id="voice-reply-text"></p></section>
+      </section>
+
+      <section id="memory-view" class="view" aria-labelledby="memory-title" hidden><header class="page-heading"><div><p class="eyebrow">KONTEKS YANG KUBAWA</p><h1 id="memory-title" tabindex="-1">Memori personal</h1><p class="muted">Kamu bisa menghapus memori kapan saja.</p></div><span class="count-pill" id="memory-total">0 memori</span></header><div class="info-card"><span class="quick-icon" aria-hidden="true">✧</span><p>Nara menyimpan hal penting dari percakapan agar jawaban berikutnya lebih relevan. Hindari membagikan informasi yang tidak ingin dikirim ke provider AI.</p></div><div id="memory-screen-list" class="memory-screen-list" aria-live="polite"></div><p id="memory-error" class="inline-error" role="alert" hidden></p></section>
+
+      <section id="reminders-view" class="view" aria-labelledby="reminders-title" hidden><header class="page-heading"><div><p class="eyebrow">JAGA HAL PENTING</p><h1 id="reminders-title" tabindex="-1">Pengingat</h1><p class="muted">Catat hal yang ingin kamu ingat nanti.</p></div><span class="count-pill" id="reminder-total">0 aktif</span></header><form id="reminder-form" class="reminder-form"><label for="reminder-title">Apa yang perlu diingat?</label><input id="reminder-title" name="title" maxlength="160" placeholder="Contoh: Tinjau rencana mingguan" required><div class="reminder-time-row"><div><label for="reminder-due">Tanggal dan waktu</label><input id="reminder-due" name="due_at" type="datetime-local" required></div><button class="button button-primary" type="submit">Tambah pengingat <span aria-hidden="true">＋</span></button></div><div class="repeat-field"><label for="reminder-repeat">Ulangi</label><select id="reminder-repeat" name="repeat"><option value="none">Tidak berulang</option><option value="daily">Setiap hari</option><option value="weekly">Setiap minggu</option></select></div><p id="reminder-error" class="inline-error" role="alert" hidden></p></form><section class="reminder-list-section" aria-labelledby="reminder-list-title"><div class="section-heading"><div><p class="eyebrow">JADWALMU</p><h2 id="reminder-list-title">Yang akan datang</h2></div><button id="show-completed" class="text-link" type="button" aria-pressed="false">Tampilkan selesai</button></div><div id="reminder-list" class="reminder-list" aria-live="polite"></div></section><div class="info-card reminder-info"><span class="quick-icon amber" aria-hidden="true">◷</span><p>Notifikasi browser muncul saat aplikasi terbuka. Aktifkan izin notifikasi di Pengaturan agar pengingat yang jatuh tempo diberi tahu.</p></div></section>
+
+      <section id="settings-view" class="view" aria-labelledby="settings-title" hidden><header class="page-heading"><div><p class="eyebrow">KENDALI DI TANGANMU</p><h1 id="settings-title" tabindex="-1">Pengaturan &amp; privasi</h1><p class="muted">Atur akses, ekspor data, dan fitur perangkat.</p></div></header><section class="settings-group" aria-labelledby="privacy-title"><h2 id="privacy-title">Data &amp; privasi</h2><article class="setting-row"><div><strong>Data percakapan</strong><p>Chat, memori, dan pengingat disimpan di PostgreSQL pada server pribadimu.</p></div><button id="export-data" class="button button-secondary" type="button">Ekspor data</button></article><article class="setting-row"><div><strong>Pemrosesan AI</strong><p>Pesan dan transkrip dikirim ke 9Router. Provider yang terhubung dapat memproses isi pesan tersebut.</p></div><span class="provider-badge">9Router</span></article><article class="setting-row"><div><strong>Kontrol data</strong><p>Hapus chat dan memori dari halamannya. Ekspor menyertakan percakapan, memori, dan pengingat.</p></div><button class="button button-quiet" type="button" data-view="memory">Kelola memori</button></article></section><section class="settings-group" aria-labelledby="device-title"><h2 id="device-title">Perangkat</h2><article class="setting-row"><div><strong>Notifikasi pengingat</strong><p id="notification-status">Periksa izin notifikasi browser.</p></div><button id="enable-notifications" class="button button-secondary" type="button">Aktifkan</button></article><article class="setting-row"><div><strong>Pasang aplikasi</strong><p>Tambahkan Nara ke layar utama untuk pengalaman seperti aplikasi.</p></div><button id="install-app" class="button button-secondary" type="button" hidden>Pasang Nara</button></article><p id="install-hint" class="muted install-hint">Di iPhone/iPad, gunakan Bagikan lalu pilih “Tambah ke Layar Utama”.</p></section><button id="logout" class="button button-danger" type="button">Keluar dari Nara</button><p id="settings-status" class="sr-only" aria-live="polite"></p></section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navigasi utama"><button type="button" data-view="home" aria-current="page"><span aria-hidden="true">⌂</span><small>Beranda</small></button><button type="button" data-view="chat"><span aria-hidden="true">▤</span><small>Chat</small></button><button type="button" data-view="voice"><span aria-hidden="true">◖</span><small>Suara</small></button><button type="button" data-view="memory"><span aria-hidden="true">✧</span><small>Memori</small></button></nav>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   </div>
 
-  <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-description">
-    <form method="dialog">
-      <p class="eyebrow">KONFIRMASI</p>
-      <h2 id="confirm-title">Hapus item?</h2>
-      <p id="confirm-description" class="muted"></p>
-      <div class="dialog-actions">
-        <button id="confirm-cancel" class="dialog-cancel" value="cancel">Batal</button>
-        <button id="confirm-delete" class="dialog-delete" value="confirm">Hapus</button>
-      </div>
-    </form>
-  </dialog>
+  <dialog id="confirm-dialog" class="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-description"><form method="dialog"><p class="eyebrow">KONFIRMASI</p><h2 id="confirm-title">Hapus item?</h2><p id="confirm-description" class="muted"></p><div class="dialog-actions"><button id="confirm-cancel" class="button button-secondary" value="cancel">Batal</button><button id="confirm-delete" class="button button-danger" value="confirm">Hapus</button></div></form></dialog>
 </body>
 </html>

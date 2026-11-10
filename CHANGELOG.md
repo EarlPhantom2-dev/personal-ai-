@@ -27,3 +27,12 @@
 - Membuat rancangan mobile di FigCraft berdasarkan gambar referensi, mencakup beranda, chat agent, dan voice agent.
 - Menambahkan jalur fitur memori personal, pengingat/rutinitas, riwayat yang dapat dicari, dan kontrol privasi.
 - Menyimpan file native FigCraft dan SVG sumber di repo; pratinjau PNG tersedia di workspace.
+
+## 2026-11-10 — Implementasi aplikasi mobile web Nara
+
+- Mengganti chat-only shell menjadi antarmuka mobile-first untuk beranda, chat, voice, memori, pengingat, dan pengaturan.
+- Menambahkan transkrip suara browser, pembacaan jawaban, pencarian riwayat, ekspor data JSON, dan pengingat sekali/harian/mingguan.
+- Menambahkan PWA dengan manifest, ikon Nara, dan service worker yang tidak menyimpan respons API.
+- Menambahkan endpoint pengingat dan ekspor yang memerlukan login, serta pencarian berdasarkan judul dan isi chat.
+- Menambahkan aksi untuk menyimpan balasan Nara secara eksplisit ke memori dari percakapan.
+- Mendokumentasikan batasan transkrip browser dan notifikasi yang hanya berjalan saat aplikasi terbuka.

@@ -22,16 +22,19 @@ async def retrieve_memories(session: AsyncSession, provider: NineRouter, query: 
 
 
 async def store_memory(
-    session: AsyncSession, provider: NineRouter, content: str, conversation_id: str
-) -> None:
+    session: AsyncSession, provider: NineRouter, content: str, conversation_id: str | None
+) -> Memory:
     vector = None
     try:
         vector = await provider.embed(content)
     except ProviderError:
         pass
-    session.add(Memory(
+    row = Memory(
         conversation_id=conversation_id,
         content=content,
         embedding=vector,
         embedding_model=provider.embedding_model if vector else None,
-    ))
+    )
+    session.add(row)
+    await session.flush()
+    return row
